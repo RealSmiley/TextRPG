@@ -1,52 +1,58 @@
-class Player:
-    def __init__(self, name):
-        self.name = name
-        self.health = 100
-        self.inventory = ["Sword", "Shield", "Heal Pot"]
-        self.level = 1
+from character import Player
 
-    def takeDamage(self, damage):
-        self.health -= damage
-        if self.health < 0:
-            self.health = 0
+def welcome():
+    print("----------------------------------------------")
+    print("|            Welcome to the RPG!             |")
+    print("----------------------------------------------")
 
-    def heal(self, amount):
-        self.health += amount
-        if self.health > 100:
-            self.health = 100
-
-class Enemy:
-    def __init__(self, name, health, attackPower):
-        self.name = name
-        self.health = health
-        self.attackPower = attackPower
-
-    def attack(self, player):
-        player.takeDamage(self.attackPower)
-
-class Info:
-    def __init__(self):
-        return 0
-    
-   
-
+def charInfo(player):
+    print("\n              Your Character:")
+    print("----------------------------------------------")
+    print(f"Name:      {player.name}")
+    print(f"Health:    {player.health}")
+    print(f"Race:      {player.race}")
+    print(f"Class:     {player.Class}")
+    print(f"Inventory: {player.inventory}")
+    print(f"Level:     {player.level}")
+    print(f"Coins:     {player.coins}")
+    print(f"Defense:   {player.defense}")
+    print(f"Damage:    {player.damage}")
+    print("----------------------------------------------\n")
 
 def main():
-    print("-------------------------------------------\n|          Welcome to the RPG!            |\n-------------------------------------------")
-    
-player_name = input("Enter your character's name: ")
-player = Player(player_name)
+    welcome()
 
-def charInfo():
-        print("")
-        print("Your name is: " + str(player.name))
-        print("Health: " + str(player.health))
-        print("Inventory: "+ str(player.inventory))
-        print("Level: " + str(player.level))
-        print("")
+    name = input("Enter your character's Name: ").title()
+    Class = input("Enter your character's Class: ").capitalize()
 
+    # Mage Class adjustment 
+    if Class == "Mage":
+        inventory = ["Staff"]
+    else:
+        inventory = ["Sword", "Shield"]
 
+    # Player Character
+    mainChar = Player(name = name, health = 100, race = "Human", Class = Class, inventory = inventory, level = 1, coins = 100, damage = 1, defense = 1)
 
+    # Item Stats
+    for item in mainChar.inventory:
+        if item == "Sword":
+            mainChar.damage += 1
+        elif item == "Shield":
+            mainChar.defense += 1
+        elif item == "Staff":
+            mainChar.damage += 2
+
+    # Class Stat Buffs
+    if Class == "Warrior":
+        mainChar.defense += mainChar.level
+    elif Class == "Mage":
+        mainChar.damage += mainChar.level
+    elif Class == "Paragon":
+        mainChar.damage += 0.5 * mainChar.level
+        mainChar.defense += 0.5 * mainChar.level
+
+    charInfo(mainChar)
 
 if 1 == 1:
     main()
